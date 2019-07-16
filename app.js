@@ -54,7 +54,7 @@ console.log(`
 `);
 
 console.log(
-  `6. Создать таблицу`
+  `6. Создать таблицу + дополнение функционала (задача 7)`
 );
 
 //Исходные данные
@@ -107,7 +107,6 @@ const users = [{
 ];
 
 
-
 const table = document.querySelector('table');
 table.style.width = '100%';
 table.style['border-collapse'] = 'collapse';
@@ -123,6 +122,8 @@ const tableHeader = {
 ////////////////////////
 
 //Решение
+
+
 const tableHeaderRow = document.createElement('tr');
 tableHeaderRow.style.border = '1px solid black';
 tableHeaderRow.style.backgroundColor = '#D7D7D7';
@@ -148,8 +149,10 @@ tableHeaderRow.appendChild(thBalance);
 
 table.appendChild(tableHeaderRow);
 
+tableOfUsers(users);
 
-(function (arrOfUsers) {
+function tableOfUsers(arrOfUsers) {
+
   arrOfUsers.forEach((user, index) => {
     const {
       name,
@@ -161,7 +164,7 @@ table.appendChild(tableHeaderRow);
     tableRow.style.border = '1px solid grey';
 
     const cellNumber = document.createElement('td');
-    cellNumber.innerHTML = index;
+    cellNumber.innerHTML = ++index;
 
     const cellName = document.createElement('td');
     cellName.textContent = name;
@@ -172,6 +175,7 @@ table.appendChild(tableHeaderRow);
     const cellBalance = document.createElement('td');
     cellBalance.innerHTML = balance;
 
+
     tableRow.appendChild(cellNumber);
     tableRow.appendChild(cellName);
     tableRow.appendChild(cellEmail);
@@ -179,7 +183,6 @@ table.appendChild(tableHeaderRow);
 
     table.appendChild(tableRow);
   });
-
 
   const tableTotalRow = document.createElement('tr');
   tableTotalRow.style.border = '1px solid grey';
@@ -194,7 +197,9 @@ table.appendChild(tableHeaderRow);
   const reducedBalance = arrOfUsers.reduce((acc, user) => acc + user.balance, 0);
 
   const totalBalance = document.createElement('td');
-  totalBalance.innerHTML = reducedBalance;
+  totalBalance.innerHTML = reducedBalance.toFixed(2);
+  totalBalance.style.color = 'red';
+  totalBalance.style.fontWeight = 'bold';
 
   tableTotalRow.appendChild(emptyRow);
   tableTotalRow.appendChild(emptyRow2);
@@ -202,5 +207,51 @@ table.appendChild(tableHeaderRow);
   tableTotalRow.appendChild(totalBalance);
 
   table.appendChild(tableTotalRow);
+};
 
-})(users);
+
+const sortBtn = document.querySelector('button');
+sortBtn.addEventListener('click', e => {
+  const {
+    target
+  } = e;
+  if (target.firstElementChild.classList.contains('fa-caret-up')) {
+    target.firstElementChild.classList.remove('fa-caret-up');
+    target.firstElementChild.classList.add('fa-caret-down');
+    users.sort((prevUser, nextUser) => nextUser.balance - prevUser.balance);
+  } else if (target.firstElementChild.classList.contains('fa-caret-down')) {
+    target.firstElementChild.classList.remove('fa-caret-down');
+    target.firstElementChild.classList.add('fa-caret-up');
+    users.sort((prevUser, nextUser) => prevUser.balance - nextUser.balance);
+  };
+
+  table.innerHTML = '';
+  tableOfUsers(users);
+});
+
+
+
+
+
+console.log(`
+`);
+
+console.log(`1. По нажатию на кнопку "btn-msg" должен появиться алерт с тем текстом который находится в атрибуте data - text у кнопки.`);
+
+const btn = document.querySelector('#btn-msg');
+btn.addEventListener('click', () => alert(btn.dataset.text));
+
+console.log(`
+`);
+console.log(`3. При нажатии на любой узел документа показать в элементе с id=tag имя тега нажатого элемента.`);
+
+document.addEventListener('click', e => {
+  const tagOfClickedElement = document.querySelector('#tag');
+  tagOfClickedElement.textContent = `Tag: ${e.target.tagName}`
+});
+
+
+console.log(`
+`);
+
+console.log(`7. Дополнить функционал для таблицы из задачи 6. Создать кнопку которая будет при клике сортировать пользователей по возрастанию или убыванию поля balance при этом в кнопке должна показываться стрелка в какую сторону сейчас отсортированы пользователи. Иконки можете взять с font awesome, в качестве фреймворка использовался bootstrap.`);
